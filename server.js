@@ -5,6 +5,8 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const filePath = path.join(__dirname, 'data', 'text.txt');
+
 app.use(express.static('public'));
 app.use(express.json()); // Enable JSON body parsing
 
@@ -18,7 +20,7 @@ app.get('/', (req, res) => {
 
 //Serving text file
 app.get('/file-content', (req, res) => {
-  fs.readFile(path.join(__dirname, 'data', 'text.txt'), 'utf8', (err, data) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Read error:', err);
       return res.status(500).send('Failed to read file');
@@ -30,7 +32,7 @@ app.get('/file-content', (req, res) => {
 //Updating
 app.post('/update-file', (req, res) => {
   const { content } = req.body;
-  fs.writeFile(path.join(__dirname, 'data', 'text.txt'), content, (err) => {
+  fs.writeFile(filePath, content, (err) => {
     if (err) {
       console.error('Write error:', err);
       return res.status(500).send('Failed to write file');
